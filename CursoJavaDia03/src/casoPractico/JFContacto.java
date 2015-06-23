@@ -20,6 +20,22 @@ public class JFContacto extends javax.swing.JFrame {
         initComponents();
     }
 
+    public JFContacto(Contacto c) {
+        initComponents();
+        if (c != null) {
+            tfNombre.setText(c.getNombreApellido());
+            cbSexo.setSelectedItem(c.getSexo());
+            spEdad.setValue(c.getEdad());
+            taDireccion.setText(c.getDireccion());
+            cbEstadoCivil.setSelectedItem(c.getEstadoCivil());
+            tfEmpresa.setText(c.getEmpresaTrabajo());
+            tfTelefono.setText(c.getTelefono());
+            tfEmail.setText(c.getEmail());
+            btCrearContacto.setVisible(false);
+            btListado.setVisible(false);
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -47,8 +63,9 @@ public class JFContacto extends javax.swing.JFrame {
         cbEstadoCivil = new javax.swing.JComboBox();
         jScrollPane1 = new javax.swing.JScrollPane();
         taDireccion = new javax.swing.JTextArea();
+        btListado = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Nombre y Apellido");
 
@@ -83,6 +100,13 @@ public class JFContacto extends javax.swing.JFrame {
         taDireccion.setRows(5);
         jScrollPane1.setViewportView(taDireccion);
 
+        btListado.setText("Ver Listado");
+        btListado.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btListadoMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -115,15 +139,19 @@ public class JFContacto extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(tfEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btCrearContacto)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(tfEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btCrearContacto))))
-                .addContainerGap(66, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(btListado)
+                                .addGap(31, 31, 31)))))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -160,9 +188,11 @@ public class JFContacto extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tfEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
-                .addGap(18, 18, 18)
-                .addComponent(btCrearContacto)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btCrearContacto)
+                    .addComponent(btListado))
+                .addContainerGap())
         );
 
         pack();
@@ -171,16 +201,34 @@ public class JFContacto extends javax.swing.JFrame {
     private void btCrearContactoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btCrearContactoMouseClicked
         Contacto contacto = new Contacto(
                 tfNombre.getText(),
-                (String)cbSexo.getSelectedItem(), 
-                (int)spEdad.getValue(),
+                (String) cbSexo.getSelectedItem(),
+                (int) spEdad.getValue(),
                 taDireccion.getText(),
-                (String)cbEstadoCivil.getSelectedItem(),
+                (String) cbEstadoCivil.getSelectedItem(),
                 tfEmpresa.getText(),
-                tfTelefono.getText(), 
+                tfTelefono.getText(),
                 tfEmail.getText());
-        
+
         JOptionPane.showMessageDialog(this, contacto.toString());
+        JFListadoContactos.addContacto(contacto);
+
+        setDefaults();
     }//GEN-LAST:event_btCrearContactoMouseClicked
+
+    private void setDefaults() {
+        tfNombre.setText("");
+        cbSexo.setSelectedIndex(0);
+        spEdad.setValue(1);
+        taDireccion.setText("");
+        cbEstadoCivil.setSelectedIndex(0);
+        tfEmpresa.setText("");
+        tfTelefono.setText("");
+        tfEmail.setText("");
+    }
+
+    private void btListadoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btListadoMouseClicked
+        new JFListadoContactos().setVisible(true);
+    }//GEN-LAST:event_btListadoMouseClicked
 
     /**
      * @param args the command line arguments
@@ -219,6 +267,7 @@ public class JFContacto extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btCrearContacto;
+    private javax.swing.JButton btListado;
     private javax.swing.JComboBox cbEstadoCivil;
     private javax.swing.JComboBox cbSexo;
     private javax.swing.JLabel jLabel1;
